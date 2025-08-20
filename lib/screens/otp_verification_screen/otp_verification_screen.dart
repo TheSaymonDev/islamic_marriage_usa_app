@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:islamic_marriage_usa_app/config/routes/app_routes.dart';
+import 'package:islamic_marriage_usa_app/core/utils/app_colors.dart';
+import 'package:islamic_marriage_usa_app/core/widgets/custom_app_bar_with_title.dart';
+import 'package:islamic_marriage_usa_app/core/widgets/custom_elevated_btn.dart';
+import 'package:islamic_marriage_usa_app/core/widgets/custom_text_logo.dart';
+import 'package:islamic_marriage_usa_app/screens/otp_verification_screen/controllers/otp_verification_controller.dart';
+import 'package:islamic_marriage_usa_app/screens/otp_verification_screen/widgets/resend_otp_row.dart';
+import 'package:pinput/pinput.dart';
+
+class OtpVerificationScreen extends StatelessWidget {
+  OtpVerificationScreen({super.key});
+
+  final _controller = Get.find<OtpVerificationController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBarWithTitle(
+          onPressed: () => Get.back(), title: 'Code Verification'),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 32.w),
+        child: SingleChildScrollView(
+          child: Form(
+            child: Column(
+              children: [
+                Gap(32.h),
+                const CustomTextLogo(),
+                Container(
+                    width: 243.w,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                        color: AppColors.lightBgClr,
+                        borderRadius: BorderRadius.circular(12.r)),
+                    child: Pinput(
+                        length: 4,
+                        controller: _controller.otpController,
+                        focusNode: _controller.focusNode,
+                        separatorBuilder: (index) => Container(
+                            height: 64.h,
+                            width: 1.w,
+                            color: AppColors.lightBgClr),
+                        defaultPinTheme: defaultPinTheme,
+                        showCursor: true,
+                        focusedPinTheme: defaultPinTheme.copyWith(
+                            textStyle: Get.textTheme.titleMedium!
+                                .copyWith(color: Colors.white),
+                            decoration: const BoxDecoration(
+                                color: AppColors.primaryClr)))),
+                Gap(16.h),
+                ResendOtpRow(),
+                Gap(20.h),
+                CustomElevatedBtn(
+                    onPressed: () => Get.toNamed(AppRoutes.resetPasswordScreen),
+                    name: 'Verify OTP')
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  final defaultPinTheme = PinTheme(
+      width: 60.w,
+      height: 64.h,
+      textStyle: Get.textTheme.titleMedium,
+      decoration:
+          BoxDecoration(color: AppColors.primaryClr.withValues(alpha: 0.2)));
+}

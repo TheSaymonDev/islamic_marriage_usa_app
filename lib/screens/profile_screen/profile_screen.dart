@@ -7,7 +7,7 @@ import 'package:islamic_marriage_usa_app/core/utils/app_colors.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_urls.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_elevated_btn.dart';
 import 'package:islamic_marriage_usa_app/screens/profile_screen/widgets/profile_management_section.dart';
-import 'package:islamic_marriage_usa_app/screens/profile_screen/widgets/profile_action_btn.dart';
+import 'package:islamic_marriage_usa_app/core/widgets/custom_list_tile_btn.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -23,62 +23,63 @@ class ProfileScreen extends StatelessWidget {
           children: [
             Gap(12.h),
             ProfileManagementSection(
-              onTap: () {},
+              onTap: () => Get.toNamed(AppRoutes.updateProfileScreen),
               iconData: Icons.edit,
               foregroundImage: AssetImage(AppUrls.placeHolderPng),
             ),
             Gap(12.h),
             CustomElevatedBtn(
-              onPressed: () {},
+              onPressed: () => Get.toNamed(AppRoutes.myBioDataScreen),
               name: 'My Bio Data',
               width: 180.w,
               height: 45.h,
             ),
             Gap(16.h),
-            ProfileActionBtn(
+            CustomListTileBtn(
               onTap: () => Get.toNamed(AppRoutes.bioDataManagementScreen),
               iconData: Icons.edit,
               title: 'Edit Bio Data',
             ),
             Gap(8.h),
-            ProfileActionBtn(
-              onTap: () {},
+            CustomListTileBtn(
+              onTap: () => Get.toNamed(AppRoutes.favouriteBioDataScreen),
               iconData: Icons.favorite,
               title: 'Favourite Bio Data',
             ),
             Gap(8.h),
-            ProfileActionBtn(
-              onTap: () {},
+            CustomListTileBtn(
+              onTap: () => Get.toNamed(AppRoutes.purchaseScreen),
               iconData: Icons.shopping_cart,
               title: 'My Purchases',
             ),
             Gap(8.h),
-            ProfileActionBtn(
-              onTap: () {},
+            CustomListTileBtn(
+              onTap: () => Get.toNamed(AppRoutes.helpCenterScreen),
               iconData: Icons.help_center,
               title: 'Help Center',
             ),
             Gap(8.h),
-            ProfileActionBtn(
-                onTap: () {},
-                iconData: Icons.privacy_tip,
-                title: 'Privacy Policy'),
+            CustomListTileBtn(
+              onTap: () => Get.toNamed(AppRoutes.privacyPolicyScreen),
+              iconData: Icons.privacy_tip,
+              title: 'Privacy Policy',
+            ),
             Gap(8.h),
-            ProfileActionBtn(
-              onTap: () {},
+            CustomListTileBtn(
+              onTap: () => Get.toNamed(AppRoutes.aboutUsScreen),
               iconData: Icons.info,
               title: 'About Us',
             ),
             Gap(8.h),
-            ProfileActionBtn(
-              onTap: () {},
+            CustomListTileBtn(
+              onTap: () => _showBiodataDeleteConfirmationDialog(context),
               iconData: Icons.delete,
               title: 'Delete Bio Data',
               tileColor: AppColors.redClr.withValues(alpha: 0.2),
             ),
             Gap(8.h),
-            ProfileActionBtn(
-              onTap: () {},
+            CustomListTileBtn(
+              onTap: () => Get.offAllNamed(AppRoutes.logInScreen),
               iconData: Icons.logout,
               title: 'Logout',
               tileColor: AppColors.greenClr.withValues(alpha: 0.2),
@@ -86,6 +87,28 @@ class ProfileScreen extends StatelessWidget {
             Gap(16.h)
           ],
         ),
+      ),
+    );
+  }
+
+  void _showBiodataDeleteConfirmationDialog(
+    BuildContext context,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Confirm Delete'),
+        content: Text('Are you sure you want to delete this Biodata?'),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Cancel')),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: Text('Delete', style: TextStyle(color: Colors.white)),
+          )
+        ],
       ),
     );
   }

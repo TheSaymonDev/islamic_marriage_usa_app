@@ -14,7 +14,7 @@ void main() async {
       initialRoute: hasInternet
           ? (userId.isNotEmpty
               ? AppRoutes.homeScreen
-              : AppRoutes.homeScreen)
+              : AppRoutes.onboardingScreen)
           : AppRoutes.noInternetScreen,
     ),
   );

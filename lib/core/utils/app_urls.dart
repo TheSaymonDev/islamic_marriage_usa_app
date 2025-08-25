@@ -1,5 +1,6 @@
 class AppUrls {
   static const appLogoPng = 'assets/images/app_logo.png';
+  static const companyLogo = 'assets/images/company_logo.jpg';
   static const demoProfile = 'assets/images/demo_profile.jpg';
   static const maleIcon = 'assets/images/male_icon.png';
   static const femaleIcon = 'assets/images/female_icon.png';

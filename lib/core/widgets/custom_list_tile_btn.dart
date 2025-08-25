@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_colors.dart';
 
-class ProfileActionBtn extends StatelessWidget {
+class CustomListTileBtn extends StatelessWidget {
   final void Function()? onTap;
   final IconData iconData;
   final String title;
   final Color? tileColor;
-  const ProfileActionBtn({
+  final Color? iconColor;
+  const CustomListTileBtn({
     super.key,
     required this.onTap,
     required this.iconData,
     required this.title,
     this.tileColor,
+    this.iconColor,
   });
 
   @override
@@ -29,6 +31,7 @@ class ProfileActionBtn extends StatelessWidget {
         child: Icon(
           iconData,
           size: 25.sp,
+          color: iconColor,
         ),
       ),
       title: Text(

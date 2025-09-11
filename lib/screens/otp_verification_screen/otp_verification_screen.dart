@@ -4,10 +4,13 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:islamic_marriage_usa_app/config/routes/app_routes.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_colors.dart';
+import 'package:islamic_marriage_usa_app/core/utils/app_const_functions.dart';
+import 'package:islamic_marriage_usa_app/core/utils/app_validators.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_app_bar_with_title.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_elevated_btn.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_text_logo.dart';
 import 'package:islamic_marriage_usa_app/screens/otp_verification_screen/controllers/otp_verification_controller.dart';
+import 'package:islamic_marriage_usa_app/screens/otp_verification_screen/models/otp_verification_model.dart';
 import 'package:islamic_marriage_usa_app/screens/otp_verification_screen/widgets/resend_otp_row.dart';
 import 'package:pinput/pinput.dart';
 
@@ -25,10 +28,12 @@ class OtpVerificationScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 32.w),
         child: SingleChildScrollView(
           child: Form(
+            key: _controller.formKey,
             child: Column(
               children: [
                 Gap(32.h),
                 const CustomTextLogo(),
+                Gap(60.h),
                 Container(
                     width: 243.w,
                     clipBehavior: Clip.antiAlias,
@@ -36,6 +41,7 @@ class OtpVerificationScreen extends StatelessWidget {
                         color: AppColors.lightBgClr,
                         borderRadius: BorderRadius.circular(12.r)),
                     child: Pinput(
+                        validator: AppValidators.requiredValidator,
                         length: 4,
                         controller: _controller.otpController,
                         focusNode: _controller.focusNode,
@@ -53,9 +59,12 @@ class OtpVerificationScreen extends StatelessWidget {
                 Gap(16.h),
                 ResendOtpRow(),
                 Gap(20.h),
-                CustomElevatedBtn(
-                    onPressed: () => Get.toNamed(AppRoutes.resetPasswordScreen),
-                    name: 'Verify OTP')
+                GetBuilder<OtpVerificationController>(
+                    builder: (controller) => controller.isLoading
+                        ? AppConstFunctions.customCircularProgressIndicator
+                        : CustomElevatedBtn(
+                            onPressed: () => _formOnSubmit(controller),
+                            name: 'Verify OTP'))
               ],
             ),
           ),
@@ -70,4 +79,19 @@ class OtpVerificationScreen extends StatelessWidget {
       textStyle: Get.textTheme.titleMedium,
       decoration:
           BoxDecoration(color: AppColors.primaryClr.withValues(alpha: 0.2)));
+
+  void _formOnSubmit(OtpVerificationController controller) async {
+    if (controller.formKey.currentState!.validate()) {
+      final result = await controller.verifyOtp(
+        otpVerificationData: OtpVerificationModel(
+          email: controller.email,
+          otp: controller.otpController.text,
+        ),
+      );
+      if (result) {
+        controller.clearField();
+        Get.offAllNamed(AppRoutes.logInScreen);
+      }
+    }
+  }
 }

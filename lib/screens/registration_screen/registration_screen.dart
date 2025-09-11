@@ -4,12 +4,14 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:islamic_marriage_usa_app/config/routes/app_routes.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_colors.dart';
+import 'package:islamic_marriage_usa_app/core/utils/app_const_functions.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_validators.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_app_bar_with_title.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_elevated_btn.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_text_form_field.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_text_logo.dart';
 import 'package:islamic_marriage_usa_app/screens/registration_screen/controllers/registration_controller.dart';
+import 'package:islamic_marriage_usa_app/screens/registration_screen/models/registration_model.dart';
 import 'package:islamic_marriage_usa_app/screens/registration_screen/widgets/log_in_row.dart';
 
 class RegistrationScreen extends StatelessWidget {
@@ -20,19 +22,22 @@ class RegistrationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarWithTitle(
-          onPressed: () => Get.back(), title: 'Join Us'),
+      appBar:
+          CustomAppBarWithTitle(onPressed: () => Get.back(), title: 'Join Us'),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 32.h),
         child: SingleChildScrollView(
           child: Form(
+            key: _controller.formKey,
             child: Column(
               children: [
                 Gap(32.h),
                 const CustomTextLogo(),
                 CustomTextFormField(
-                    hintText: 'Full Name',
-                    controller: _controller.nameController),
+                  hintText: 'Full Name',
+                  controller: _controller.nameController,
+                  validator: AppValidators.requiredValidator,
+                ),
                 Gap(16.h),
                 CustomTextFormField(
                   hintText: 'Email',
@@ -63,7 +68,11 @@ class RegistrationScreen extends StatelessWidget {
                       hintText: 'Confirm Password',
                       controller: _controller.confirmPasswordController,
                       obscureText: controller.isCPObscure,
-                      validator: AppValidators.passwordValidator,
+                      validator: (value) =>
+                          AppValidators.confirmPasswordValidator(
+                            value,
+                            controller.passwordController,
+                          ),
                       suffixIcon: IconButton(
                           onPressed: () => controller.toggleCPObscure(),
                           icon: Icon(
@@ -76,10 +85,12 @@ class RegistrationScreen extends StatelessWidget {
                               size: 22.sp)));
                 }),
                 Gap(24.h),
-                CustomElevatedBtn(
-                    onPressed: () =>
-                        Get.toNamed(AppRoutes.otpVerificationScreen),
-                    name: 'Register'),
+                GetBuilder<RegistrationController>(
+                    builder: (controller) => controller.isLoading
+                        ? AppConstFunctions.customCircularProgressIndicator
+                        : CustomElevatedBtn(
+                            onPressed: () => _formOnSubmit(controller),
+                            name: 'Register')),
                 Gap(90.h),
                 LogInRow()
               ],
@@ -88,5 +99,28 @@ class RegistrationScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _formOnSubmit(RegistrationController controller) async {
+    if (controller.formKey.currentState!.validate()) {
+      final result = await controller.registerUser(
+        registrationData: RegistrationModel(
+          name: controller.nameController.text,
+          email: controller.emailController.text,
+          password: controller.passwordController.text,
+        ),
+      );
+      if (result) {
+        Get.toNamed(
+          AppRoutes.otpVerificationScreen,
+          arguments: {
+            'name': controller.nameController.text,
+            'email': controller.emailController.text,
+            'password': controller.passwordController.text,
+          },
+        );
+        controller.clearFields();
+      }
+    }
   }
 }

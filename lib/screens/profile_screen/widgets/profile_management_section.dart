@@ -21,7 +21,7 @@ class ProfileManagementSection extends StatelessWidget {
       child: Stack(
         children: [
           CircleAvatar(
-            radius: 50.r,
+            radius: 40.r,
             foregroundImage: foregroundImage,
           ),
           Positioned(
@@ -29,8 +29,8 @@ class ProfileManagementSection extends StatelessWidget {
             right: 2,
             child: CircleAvatar(
               backgroundColor: AppColors.secondaryClr,
-              radius: 13.r,
-              child: Icon(iconData, color: Colors.white, size: 15.sp),
+              radius: 10.r,
+              child: Icon(iconData, color: Colors.white, size: 12.sp),
             ),
           )
         ],

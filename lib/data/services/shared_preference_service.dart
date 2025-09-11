@@ -11,6 +11,18 @@ class SharedPreferencesService {
     _prefs = await SharedPreferences.getInstance();
   }
 
+  void saveToken(String token) {
+    _prefs.setString('token', token);
+  }
+
+  String getToken() {
+    return _prefs.getString('token') ?? '';
+  }
+
+  void clearToken() {
+    _prefs.remove('token');
+  }
+
   void saveUserId(String userId) {
     _prefs.setString('userId', userId);
   }

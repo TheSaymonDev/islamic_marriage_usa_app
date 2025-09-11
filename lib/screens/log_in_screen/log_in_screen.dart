@@ -4,12 +4,14 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:islamic_marriage_usa_app/config/routes/app_routes.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_colors.dart';
+import 'package:islamic_marriage_usa_app/core/utils/app_const_functions.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_validators.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_app_bar_with_title.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_elevated_btn.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_text_form_field.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_text_logo.dart';
 import 'package:islamic_marriage_usa_app/screens/log_in_screen/controllers/log_in_controller.dart';
+import 'package:islamic_marriage_usa_app/screens/log_in_screen/models/log_in_model.dart';
 import 'package:islamic_marriage_usa_app/screens/log_in_screen/widgets/remember_forgot_password_row.dart';
 import 'package:islamic_marriage_usa_app/screens/log_in_screen/widgets/sign_up_row.dart';
 
@@ -27,14 +29,16 @@ class LogInScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 32.h),
         child: SingleChildScrollView(
           child: Form(
+            key: _controller.formKey,
             child: Column(
               children: [
                 Gap(32.h),
                 const CustomTextLogo(),
                 CustomTextFormField(
-                    hintText: 'Email',
-                    validator: AppValidators.emailValidator,
-                    controller: _controller.emailController),
+                  hintText: 'Email',
+                  validator: AppValidators.emailValidator,
+                  controller: _controller.emailController,
+                ),
                 Gap(16.h),
                 GetBuilder<LogInController>(
                   builder: (controller) {
@@ -44,7 +48,7 @@ class LogInScreen extends StatelessWidget {
                         validator: AppValidators.passwordValidator,
                         obscureText: controller.isObscure,
                         suffixIcon: IconButton(
-                            onPressed: () => controller.toggleObscure,
+                            onPressed: () => controller.toggleObscure(),
                             icon: Icon(
                                 controller.isObscure
                                     ? Icons.visibility_off
@@ -58,9 +62,12 @@ class LogInScreen extends StatelessWidget {
                 Gap(8.h),
                 RememberForgotPasswordRow(),
                 Gap(16.h),
-                CustomElevatedBtn(
-                    onPressed: () => Get.toNamed(AppRoutes.homeScreen),
-                    name: 'Log in'),
+                GetBuilder<LogInController>(
+                    builder: (controller) => controller.isLoading
+                        ? AppConstFunctions.customCircularProgressIndicator
+                        : CustomElevatedBtn(
+                            onPressed: () => _formOnSubmit(controller),
+                            name: 'Log in')),
                 Gap(130.h),
                 SignUpRow()
               ],
@@ -69,5 +76,19 @@ class LogInScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _formOnSubmit(LogInController controller) async {
+    if (controller.formKey.currentState!.validate()) {
+      final result = await controller.logInUser(
+          logInData: LogInModel(
+        email: controller.emailController.text,
+        password: controller.passwordController.text,
+      ));
+      if (result) {
+        Get.offAllNamed(AppRoutes.homeScreen);
+        controller.clearFields();
+      }
+    }
   }
 }

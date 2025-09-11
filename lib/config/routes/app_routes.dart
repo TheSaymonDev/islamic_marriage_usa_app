@@ -5,12 +5,13 @@ class AppRoutes {
   static const registrationScreen = '/registration_screen';
   static const emailVerificationScreen = '/email_verification_screen';
   static const otpVerificationScreen = '/otp_verification_screen';
+  static const forgotOtpVerificationScreen = '/forgot_otp_verification_screen';
   static const resetPasswordScreen = '/reset_password_screen';
   static const homeScreen = '/home_screen';
-  static const bioDataDetailsScreen = '/bio_data_details_screen';
-  static const bioDataManagementScreen = '/bio_data_management_screen';
-  static const myBioDataScreen = '/my_bio_data_screen';
-  static const favouriteBioDataScreen = '/favourite_bio_data_screen';
+  static const biodataDetailsScreen = '/biodata_details_screen';
+  static const biodataManagementScreen = '/biodata_management_screen';
+  static const myBiodataScreen = '/my_biodata_screen';
+  static const favouriteBiodataScreen = '/favourite_biodata_screen';
   static const helpCenterScreen = '/help_center_screen';
   static const privacyPolicyScreen = '/privacy_policy_screen';
   static const aboutUsScreen = '/about_us_screen';

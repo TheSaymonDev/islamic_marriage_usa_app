@@ -26,8 +26,6 @@ class AppConstFunctions {
   }
 
   static final customCircularProgressIndicator =
-      SpinKitHourGlass(color: AppColors.primaryClr, size: 35.0.r);
-
-
+      SpinKitHourGlass(color: AppColors.primaryClr, size: 30.0.r);
 
 }

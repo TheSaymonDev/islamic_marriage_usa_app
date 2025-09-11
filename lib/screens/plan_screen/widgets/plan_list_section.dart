@@ -9,45 +9,49 @@ class PlanListSection extends StatelessWidget {
 
   final plans = [
     {
-      "title": "Basic",
-      "duration": "30 Day's Package",
-      "price": "\$200",
-      "oldPrice": "\$250",
-      "connections": "2 connections included",
+      "title": "Free (Trial)",
+      "duration": "7 Days Access",
+      "price": "\$0",
+      "connections": "3 biodata requests",
       "features": [
-        "This is 30 Days Plan",
-        "This is Basic plan",
-        "\$200 Amount",
-        "30 Day's Package",
-        "Email Support",
+        "View all profiles",
+        "3 biodata requests",
+        "7 days picture access",
       ]
     },
     {
       "title": "Standard",
-      "duration": "90 Day's Package",
-      "price": "\$450",
-      "oldPrice": "\$550",
-      "connections": "5 connections included",
+      "duration": "1 Month",
+      "price": "\$19.99",
+      "tag": "Most Popular",
+      "connections": "5 biodata requests",
       "features": [
-        "This is 90 Days Plan",
-        "This is Standard plan",
-        "\$450 Amount",
-        "90 Day's Package",
-        "Priority Support",
+        "All profile pictures",
+        "5 biodata requests",
+        "Profile boost",
       ]
     },
     {
       "title": "Premium",
-      "duration": "180 Day's Package",
-      "price": "\$800",
-      "oldPrice": "\$900",
-      "connections": "10 connections included",
+      "duration": "2 Months",
+      "price": "\$29.99",
+      "connections": "10 biodata requests",
       "features": [
-        "This is 180 Days Plan",
-        "This is Premium plan",
-        "\$800 Amount",
-        "180 Day's Package",
-        "24/7 VIP Support",
+        "All profile pictures",
+        "10 biodata requests",
+        "Verified badge",
+        "Priority listing",
+      ]
+    },
+    {
+      "title": "Super Premium",
+      "duration": "3 Months",
+      "price": "\$39.99",
+      "connections": "15 biodata requests",
+      "features": [
+        "Priority support",
+        "15 biodata requests",
+        "Free profile promotion on homepage",
       ]
     },
   ];
@@ -59,12 +63,17 @@ class PlanListSection extends StatelessWidget {
       itemCount: plans.length,
       itemBuilder: (context, index) {
         final plan = plans[index];
+        final isPopular = plan["tag"] == "Most Popular";
+
         return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+          ),
           child: Container(
             width: 250.w,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: index == 1
+                colors: isPopular
                     ? [AppColors.secondaryClr, AppColors.primaryClr]
                     : [AppColors.primaryClr, AppColors.secondaryClr],
                 begin: Alignment.topLeft,
@@ -81,39 +90,52 @@ class PlanListSection extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(plan["title"]! as String,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium!
-                              .copyWith(color: Colors.white)),
-                      Gap(8.h),
-                      Text(plan["duration"]! as String,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: Colors.white)),
-                      Gap(8.h),
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(plan["price"]! as String,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge!
-                                  .copyWith(color: Colors.white)),
-                          Gap(16.w),
-                          Text(plan["oldPrice"]! as String,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(
-                                      color: Colors.white,
-                                      decoration: TextDecoration.lineThrough)),
+                          Text(
+                            plan["title"]! as String,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(color: Colors.white),
+                          ),
+                          if (isPopular)
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w, vertical: 4.h),
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Text("Most Popular",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(color: Colors.white)),
+                            ),
                         ],
+                      ),
+                      Gap(6.h),
+                      Text(
+                        plan["duration"]! as String,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: Colors.white70),
+                      ),
+                      Gap(10.h),
+                      Text(
+                        plan["price"]! as String,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(color: Colors.white),
                       ),
                     ],
                   ),
                 ),
+
                 // White body
                 Expanded(
                   child: Container(
@@ -145,15 +167,18 @@ class PlanListSection extends StatelessWidget {
                         Gap(8.h),
                         Expanded(
                           child: ListView(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             children: (plan["features"]! as List<String>)
                                 .map(
                                   (f) => Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 4.h),
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 4.h),
                                     child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Icon(Icons.check_circle,
-                                            size: 20.sp,
+                                            size: 18.sp,
                                             color: AppColors.primaryClr),
                                         Gap(8.w),
                                         Expanded(
@@ -163,7 +188,7 @@ class PlanListSection extends StatelessWidget {
                                                 .textTheme
                                                 .bodySmall,
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -171,7 +196,8 @@ class PlanListSection extends StatelessWidget {
                                 .toList(),
                           ),
                         ),
-                        CustomElevatedBtn(onPressed: () {}, name: 'Subscribe')
+                        CustomElevatedBtn(
+                            onPressed: () {}, name: 'Subscribe Now')
                       ],
                     ),
                   ),
@@ -181,7 +207,7 @@ class PlanListSection extends StatelessWidget {
           ),
         );
       },
-      separatorBuilder: (context, index) => Gap(8.w),
+      separatorBuilder: (context, index) => Gap(12.w),
     );
   }
 }

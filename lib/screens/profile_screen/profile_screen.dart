@@ -4,8 +4,13 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:islamic_marriage_usa_app/config/routes/app_routes.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_colors.dart';
+import 'package:islamic_marriage_usa_app/core/utils/app_const_functions.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_urls.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_elevated_btn.dart';
+import 'package:islamic_marriage_usa_app/data/services/shared_preference_service.dart';
+import 'package:islamic_marriage_usa_app/screens/profile_screen/controllers/current_user_controller.dart';
+import 'package:islamic_marriage_usa_app/screens/profile_screen/controllers/delete_biodata_controller.dart';
+import 'package:islamic_marriage_usa_app/screens/profile_screen/widgets/biodata_status_chip.dart';
 import 'package:islamic_marriage_usa_app/screens/profile_screen/widgets/profile_management_section.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_list_tile_btn.dart';
 
@@ -27,22 +32,33 @@ class ProfileScreen extends StatelessWidget {
               iconData: Icons.edit,
               foregroundImage: AssetImage(AppUrls.placeHolderPng),
             ),
-            Gap(12.h),
+            Text(
+              'Biodata Status',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            Gap(4.h),
+            GetBuilder<CurrentUserController>(
+              builder: (controller) {
+                final status = controller.userData?.data?.biodataStatus ?? "Draft";
+                return BiodataStatusChip(status: status);
+              },
+            ),
+            Gap(8.h),
             CustomElevatedBtn(
-              onPressed: () => Get.toNamed(AppRoutes.myBioDataScreen),
+              onPressed: () => Get.toNamed(AppRoutes.myBiodataScreen),
               name: 'My Bio Data',
               width: 180.w,
               height: 45.h,
             ),
             Gap(16.h),
             CustomListTileBtn(
-              onTap: () => Get.toNamed(AppRoutes.bioDataManagementScreen),
+              onTap: () => Get.toNamed(AppRoutes.biodataManagementScreen),
               iconData: Icons.edit,
               title: 'Edit Bio Data',
             ),
             Gap(8.h),
             CustomListTileBtn(
-              onTap: () => Get.toNamed(AppRoutes.favouriteBioDataScreen),
+              onTap: () => Get.toNamed(AppRoutes.favouriteBiodataScreen),
               iconData: Icons.favorite,
               title: 'Favourite Bio Data',
             ),
@@ -79,7 +95,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             Gap(8.h),
             CustomListTileBtn(
-              onTap: () => Get.offAllNamed(AppRoutes.logInScreen),
+              onTap: () => _logout(),
               iconData: Icons.logout,
               title: 'Logout',
               tileColor: AppColors.greenClr.withValues(alpha: 0.2),
@@ -103,13 +119,26 @@ class ProfileScreen extends StatelessWidget {
           TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text('Cancel')),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text('Delete', style: TextStyle(color: Colors.white)),
-          )
+          GetBuilder<DeleteBiodataController>(
+              builder: (controller) => controller.isLoading
+                  ? AppConstFunctions.customCircularProgressIndicator
+                  : ElevatedButton(
+                      onPressed: () async {
+                        final result = await controller.deleteBiodata();
+                        if (result) Get.offAllNamed(AppRoutes.homeScreen);
+                      },
+                      style:
+                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      child:
+                          Text('Delete', style: TextStyle(color: Colors.white)),
+                    ))
         ],
       ),
     );
+  }
+
+  void _logout() {
+    SharedPreferencesService().clearToken();
+    Get.offAllNamed(AppRoutes.logInScreen);
   }
 }

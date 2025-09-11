@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_colors.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_const_functions.dart';
+import 'package:islamic_marriage_usa_app/core/utils/app_urls.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_elevated_btn.dart';
 import 'package:islamic_marriage_usa_app/screens/no_internet_screen/controllers/connection_controller.dart';
 
@@ -19,7 +20,7 @@ class NoInternetScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-           Image.asset('assets/images/no_internet.png', width: 150.w),
+           Image.asset(AppUrls.noInternetPng, width: 150.w),
             Gap(32.h),
             Text(
               'Whoops!',

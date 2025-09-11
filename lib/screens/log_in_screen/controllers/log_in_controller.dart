@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:islamic_marriage_usa_app/data/services/connectivity_service.dart';
-
+import 'package:islamic_marriage_usa_app/core/utils/app_const_functions.dart';
+import 'package:islamic_marriage_usa_app/core/utils/app_urls.dart';
+import 'package:islamic_marriage_usa_app/data/services/api_service.dart';
+import 'package:islamic_marriage_usa_app/data/services/shared_preference_service.dart';
+import 'package:islamic_marriage_usa_app/screens/log_in_screen/models/log_in_model.dart';
 
 class LogInController extends GetxController {
   bool isLoading = false;
@@ -12,44 +15,31 @@ class LogInController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // Future<String> signInUser({required SignInModel signInData}) async {
-  //   if (!await ConnectivityService.isConnected()) {
-  //     customErrorMessage(message: 'Please check your internet connection');
-  //     return 'No internet connection';
-  //   }
-  //   _setLoading(true);
-  //   try {
-  //     final response = await ApiService().post(url: AppUrls.signInUrl, data: signInData);
-  //     _setLoading(false);
-  //     if (response.success) {
-  //       final message = response.data['message'];
-  //       if (message == 'Login Successful') {
-  //         customSuccessMessage(message: 'Successfully Log In');
-  //         SharedPreferencesService().saveUserData(response.data);
-  //       } else if (message == 'User not verified') {
-  //         customErrorMessage(message: message);
-  //       }
-  //       return message;
-  //     } else {
-  //       final errorMessage = response.message['message'] ?? 'Log In Failed';
-  //       customErrorMessage(message: errorMessage);
-  //       return errorMessage;
-  //     }
-  //   } catch (error) {
-  //     _setLoading(false);
-  //     customErrorMessage(message: error.toString());
-  //     return error.toString();
-  //   }
-  // }
-  //
-  // Future<void> launchInBrowser(Uri url) async {
-  //   if (!await launchUrl(
-  //     url,
-  //     mode: LaunchMode.externalApplication,
-  //   )) {
-  //     throw Exception('Could not launch $url');
-  //   }
-  // }
+
+  Future<bool> logInUser({required LogInModel logInData}) async {
+
+    _setLoading(true);
+
+    try {
+      final response =
+      await ApiService().post(url: AppUrls.logInUrl, data: logInData);
+
+      if (response.success) {
+        AppConstFunctions.customSuccessMessage(message: 'Login successful');
+        SharedPreferencesService().saveToken(response.data['data']['token']);
+        return true;
+      } else {
+        final errorMessage = response.message['message'] ?? 'Login failed';
+        AppConstFunctions.customErrorMessage(message: errorMessage);
+        return false;
+      }
+    } catch (error) {
+      AppConstFunctions.customErrorMessage(message: error.toString());
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
 
   void toggleObscure() {
     isObscure = !isObscure;
@@ -61,8 +51,21 @@ class LogInController extends GetxController {
     update();
   }
 
-  // void _setLoading(bool value) {
-  //   isLoading = value;
-  //   update();
-  // }
+  void _setLoading(bool value) {
+    isLoading = value;
+    update();
+  }
+
+  void clearFields(){
+    emailController.clear();
+    passwordController.clear();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
 }

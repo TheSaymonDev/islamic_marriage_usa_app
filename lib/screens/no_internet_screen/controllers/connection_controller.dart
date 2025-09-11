@@ -13,7 +13,7 @@ class ConnectionController extends GetxController {
     _setLoading(true);
     final bool hasInternet = await ConnectivityService.isConnected();
     if (hasInternet) {
-      final token = SharedPreferencesService().getUserId();
+      final token = SharedPreferencesService().getToken();
       if(token.isNotEmpty){
         Get.offAllNamed(AppRoutes.homeScreen);
       }else{
@@ -22,7 +22,7 @@ class ConnectionController extends GetxController {
       _setLoading(false);
     } else {
       AppConstFunctions.customErrorMessage(
-          message: 'Still no internet connection. Please try again.');
+          message: 'Still no internet connection, Please try again');
       _setLoading(false);
     }
   }

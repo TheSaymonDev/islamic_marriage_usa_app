@@ -8,11 +8,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesService().init(); // Initialize SharedPreferences
   final hasInternet = await ConnectivityService.isConnected();
-  final userId = SharedPreferencesService().getUserId();
+  final token = SharedPreferencesService().getToken();
   runApp(
     MyApp(
       initialRoute: hasInternet
-          ? (userId.isNotEmpty
+          ? (token.isNotEmpty
               ? AppRoutes.homeScreen
               : AppRoutes.onboardingScreen)
           : AppRoutes.noInternetScreen,

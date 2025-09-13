@@ -10,7 +10,7 @@ import 'package:islamic_marriage_usa_app/core/widgets/custom_bio_data_table.dart
 import 'package:islamic_marriage_usa_app/core/widgets/custom_outlined_btn.dart';
 import 'package:islamic_marriage_usa_app/data/models/step1_general_info.dart';
 import 'package:islamic_marriage_usa_app/screens/explore_screen/controllers/all_biodata_controller.dart';
-import 'package:islamic_marriage_usa_app/screens/profile_screen/controllers/favourite_biodata_controller.dart';
+import 'package:islamic_marriage_usa_app/screens/explore_screen/controllers/toggle_favourite_biodata_controller.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
@@ -42,7 +42,6 @@ class ExploreScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final biodata = biodatas[index];
               final generalInfo = biodata.step1GeneralInfo;
-
               return CustomBioDataBg(
                 child: Stack(
                   children: [
@@ -85,20 +84,15 @@ class ExploreScreen extends StatelessWidget {
                     ),
 
                     /// 🔥 Favourite Button (Reactive)
-                    GetBuilder<FavouriteBiodataController>(
-                      builder: (favController) {
-                        final isFav = biodata.sId != null &&
-                            favController.isFavourite(biodata.sId!);
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: GetBuilder<ToggleFavouriteBiodataController>(
+                        builder: (favController) {
+                          final isFavorite = favController.isFavourite(biodata.sId!);
 
-                        return Positioned(
-                          top: 8,
-                          right: 8,
-                          child: InkWell(
-                            onTap: () {
-                              if (biodata.sId != null) {
-                                favController.toggleFavourite(biodata.sId!);
-                              }
-                            },
+                          return InkWell(
+                            onTap: () => favController.toggleFavourite(biodata.sId!),
                             borderRadius: BorderRadius.circular(20.r),
                             child: Container(
                               padding: EdgeInsets.all(8.w),
@@ -107,15 +101,15 @@ class ExploreScreen extends StatelessWidget {
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
-                                isFav ? Icons.favorite : Icons.favorite_border,
-                                color: isFav ? Colors.red : Colors.white,
+                                isFavorite ? Icons.favorite : Icons.favorite_border,
+                                color: isFavorite ? Colors.red : Colors.white,
                                 size: 22.sp,
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                          );
+                        },
+                      ),
+                    )
                   ],
                 ),
               );

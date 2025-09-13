@@ -204,7 +204,7 @@ class MyBiodataScreen extends StatelessWidget {
     return {
       'Biodata Type': generalInfo?.biodataType,
       'Marital Status': generalInfo?.maritalStatus,
-      'Date of Birth': generalInfo?.dateOfBirth,
+      'Date of Birth': AppConstFunctions.formatApiDate(generalInfo?.dateOfBirth),
       'Complexion': generalInfo?.complexion,
       'Height': generalInfo?.height,
       'Weight': generalInfo?.weight,

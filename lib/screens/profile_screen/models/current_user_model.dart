@@ -32,6 +32,7 @@ class CurrentUserModel {
 
 class Data {
   String? biodataStatus;
+  List<String>? favoriteBiodatas;
   String? sId;
   String? name;
   String? email;
@@ -42,6 +43,7 @@ class Data {
 
   Data({
     this.biodataStatus,
+    this.favoriteBiodatas,
     this.sId,
     this.name,
     this.email,
@@ -53,6 +55,7 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     biodataStatus = json['biodataStatus'];
+    favoriteBiodatas = json['favoriteBiodatas'].cast<String>();
     sId = json['_id'];
     name = json['name'];
     email = json['email'];
@@ -65,6 +68,7 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['biodataStatus'] = biodataStatus;
+    data['favoriteBiodatas'] = favoriteBiodatas;
     data['_id'] = sId;
     data['name'] = name;
     data['email'] = email;

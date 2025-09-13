@@ -10,7 +10,7 @@ import 'package:islamic_marriage_usa_app/core/widgets/custom_bio_data_bg.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_bio_data_table.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_outlined_btn.dart';
 import 'package:islamic_marriage_usa_app/data/models/step1_general_info.dart';
-import 'package:islamic_marriage_usa_app/screens/profile_screen/controllers/favourite_biodata_controller.dart';
+import 'package:islamic_marriage_usa_app/screens/favourite_biodata_screen/controllers/favourite_biodata_controller.dart';
 
 class FavouriteBiodataScreen extends StatelessWidget {
   const FavouriteBiodataScreen({super.key});
@@ -45,8 +45,8 @@ class FavouriteBiodataScreen extends StatelessWidget {
               itemCount: biodataList.length,
               separatorBuilder: (_, __) => Gap(12.h),
               itemBuilder: (context, index) {
-                final biodataItem = biodataList[index];
-                final generalInfo = biodataItem.biodata?.step1GeneralInfo;
+                final biodata = biodataList[index].biodata;
+                final generalInfo = biodata?.step1GeneralInfo;
 
                 return CustomBioDataBg(
                   child: Stack(
@@ -65,7 +65,7 @@ class FavouriteBiodataScreen extends StatelessWidget {
                           ),
                           Gap(8.h),
                           Text(
-                            biodataItem.biodata?.bioDataId ?? '',
+                            biodata?.bioDataId ?? '',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium!
@@ -80,7 +80,7 @@ class FavouriteBiodataScreen extends StatelessWidget {
                           CustomOutlinedBtn(
                             onPressed: () => Get.toNamed(
                               AppRoutes.biodataDetailsScreen,
-                              arguments: {'biodata': biodataItem},
+                              arguments: {'biodata': biodata},
                             ),
                             name: 'Full Bio Data',
                             width: 300.w,
@@ -94,7 +94,7 @@ class FavouriteBiodataScreen extends StatelessWidget {
                         child: InkWell(
                           onTap: () {
                             controller.removeFromFavouriteList(
-                              biodataId: biodataItem.biodata!.sId!,
+                              biodataId: biodata!.sId!,
                             );
                           },
                           borderRadius: BorderRadius.circular(20.r),

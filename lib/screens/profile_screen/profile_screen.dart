@@ -19,9 +19,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity.h,
-      width: double.infinity.w,
+    return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: SingleChildScrollView(
         child: Column(
@@ -39,7 +37,8 @@ class ProfileScreen extends StatelessWidget {
             Gap(4.h),
             GetBuilder<CurrentUserController>(
               builder: (controller) {
-                final status = controller.userData?.data?.biodataStatus ?? "Draft";
+                final status =
+                    controller.userData?.data?.biodataStatus ?? "Draft";
                 return BiodataStatusChip(status: status);
               },
             ),
@@ -51,11 +50,16 @@ class ProfileScreen extends StatelessWidget {
               height: 45.h,
             ),
             Gap(16.h),
-            CustomListTileBtn(
-              onTap: () => Get.toNamed(AppRoutes.biodataManagementScreen),
-              iconData: Icons.edit,
-              title: 'Edit Bio Data',
-            ),
+            GetBuilder<CurrentUserController>(
+                builder: (controller) =>
+                    controller.userData?.data?.biodataStatus != 'approved'
+                        ? CustomListTileBtn(
+                            onTap: () =>
+                                Get.toNamed(AppRoutes.biodataManagementScreen),
+                            iconData: Icons.edit,
+                            title: 'Edit Bio Data',
+                          )
+                        : SizedBox()),
             Gap(8.h),
             CustomListTileBtn(
               onTap: () => Get.toNamed(AppRoutes.favouriteBiodataScreen),

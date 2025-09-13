@@ -29,7 +29,8 @@ class Step1GeneralInfoForm extends StatelessWidget {
               CustomDropdownBtn(
                 value: controller.selectedBioDataType,
                 items: controller.bioDataTypeOptions,
-                onChanged: (value) => controller.updateSelectedBioDataType(value),
+                onChanged: (value) =>
+                    controller.updateSelectedBioDataType(value),
                 validator: AppValidators.requiredValidator,
               ),
               Gap(16.h),
@@ -69,7 +70,8 @@ class Step1GeneralInfoForm extends StatelessWidget {
               CustomDropdownBtn(
                 value: controller.selectedComplexion,
                 items: controller.complexionOptions,
-                onChanged: (value) => controller.updateSelectedComplexion(value),
+                onChanged: (value) =>
+                    controller.updateSelectedComplexion(value),
                 validator: AppValidators.requiredValidator,
               ),
               Gap(16.h),
@@ -102,7 +104,8 @@ class Step1GeneralInfoForm extends StatelessWidget {
               CustomDropdownBtn(
                 value: controller.selectedBloodGroup,
                 items: controller.bloodGroupOptions,
-                onChanged: (value) => controller.updateSelectedBloodGroup(value),
+                onChanged: (value) =>
+                    controller.updateSelectedBloodGroup(value),
                 validator: AppValidators.requiredValidator,
               ),
               Gap(16.h),

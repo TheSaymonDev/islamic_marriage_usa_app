@@ -3,6 +3,7 @@ import 'package:islamic_marriage_usa_app/core/utils/app_const_functions.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_urls.dart';
 import 'package:islamic_marriage_usa_app/data/models/favourite_biodata_model.dart';
 import 'package:islamic_marriage_usa_app/data/services/api_service.dart';
+import 'package:islamic_marriage_usa_app/screens/profile_screen/controllers/current_user_controller.dart';
 import 'package:islamic_marriage_usa_app/screens/profile_screen/models/add_to_favourite_biodata_model.dart';
 
 class FavouriteBiodataController extends GetxController {
@@ -10,6 +11,9 @@ class FavouriteBiodataController extends GetxController {
   FavouriteBiodataModel? favouriteBiodata;
 
   List<String> favouriteIds = [];
+
+  final CurrentUserController _currentUserController =
+      Get.find<CurrentUserController>();
 
   @override
   void onInit() {
@@ -35,12 +39,12 @@ class FavouriteBiodataController extends GetxController {
           favouriteIds.add(biodataId);
         }
         await _fetchFavouriteBiodata();
+        await _currentUserController.fetchCurrentUserData();
         AppConstFunctions.customSuccessMessage(
             message: 'Successfully added to favourite');
       } else {
         final errorMessage =
-            response.message['message'] ?? 'Biodata added failed';
-
+            response.message['message'] ?? 'Failed to add to favourite';
         AppConstFunctions.customErrorMessage(message: errorMessage);
       }
     } catch (error) {
@@ -64,14 +68,14 @@ class FavouriteBiodataController extends GetxController {
         favouriteIds.remove(biodataId);
         // 🔥 Remove from favouriteBiodata.data list (UI তে যাতে সাথে সাথে reflect করে)
         favouriteBiodata?.data?.removeWhere(
-              (item) => item.biodata?.sId == biodataId,
+          (item) => item.biodata?.sId == biodataId,
         );
+        await _currentUserController.fetchCurrentUserData();
         AppConstFunctions.customSuccessMessage(
-            message: 'Successfully remove from favourite');
+            message: 'Successfully removed from favourite');
       } else {
         final errorMessage =
-            response.message['message'] ?? 'Biodata remove failed';
-
+            response.message['message'] ?? 'Failed to remove from favourite';
         AppConstFunctions.customErrorMessage(message: errorMessage);
       }
     } catch (error) {

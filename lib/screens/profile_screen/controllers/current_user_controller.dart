@@ -11,10 +11,10 @@ class CurrentUserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _fetchCurrentUserData();
+    fetchCurrentUserData();
   }
 
-  Future<void> _fetchCurrentUserData() async {
+  Future<void> fetchCurrentUserData() async {
     _setLoading(true);
 
     try {

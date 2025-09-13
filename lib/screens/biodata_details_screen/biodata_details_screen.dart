@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_colors.dart';
+import 'package:islamic_marriage_usa_app/core/utils/app_const_functions.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_urls.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_app_bar_with_title.dart';
 import 'package:islamic_marriage_usa_app/core/widgets/custom_bio_data_table.dart';
@@ -162,7 +163,7 @@ class BiodataDetailsScreen extends StatelessWidget {
     return {
       'Biodata Type': generalInfo?.biodataType,
       'Marital Status': generalInfo?.maritalStatus,
-      'Date of Birth': generalInfo?.dateOfBirth,
+      'Date of Birth': AppConstFunctions.formatApiDate(generalInfo?.dateOfBirth),
       'Complexion': generalInfo?.complexion,
       'Height': generalInfo?.height,
       'Weight': generalInfo?.weight,

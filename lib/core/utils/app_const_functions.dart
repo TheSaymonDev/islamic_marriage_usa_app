@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:islamic_marriage_usa_app/core/utils/app_colors.dart';
 
 class AppConstFunctions {
@@ -27,5 +28,14 @@ class AppConstFunctions {
 
   static final customCircularProgressIndicator =
       SpinKitHourGlass(color: AppColors.primaryClr, size: 30.0.r);
+
+  static String? formatApiDate(String? apiDate) {
+    try {
+      DateTime parsedDate = DateTime.parse(apiDate!);
+      return DateFormat('dd-MM-yyyy').format(parsedDate);
+    } catch (e) {
+      return apiDate;
+    }
+  }
 
 }

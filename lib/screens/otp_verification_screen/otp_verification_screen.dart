@@ -35,14 +35,14 @@ class OtpVerificationScreen extends StatelessWidget {
                 const CustomTextLogo(),
                 Gap(60.h),
                 Container(
-                    width: 243.w,
+                    width: 300.w,
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                         color: AppColors.lightBgClr,
                         borderRadius: BorderRadius.circular(12.r)),
                     child: Pinput(
                         validator: AppValidators.requiredValidator,
-                        length: 4,
+                        length: 6,
                         controller: _controller.otpController,
                         focusNode: _controller.focusNode,
                         separatorBuilder: (index) => Container(
@@ -74,7 +74,6 @@ class OtpVerificationScreen extends StatelessWidget {
   }
 
   final defaultPinTheme = PinTheme(
-      width: 60.w,
       height: 64.h,
       textStyle: Get.textTheme.titleMedium,
       decoration:

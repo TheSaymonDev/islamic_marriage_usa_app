@@ -8,6 +8,7 @@ import 'package:islamic_marriage_usa_app/screens/biodata_management_screen/bioda
 import 'package:islamic_marriage_usa_app/screens/email_verification_screen/bindings/email_verification_binding.dart';
 import 'package:islamic_marriage_usa_app/screens/email_verification_screen/email_verification_screen.dart';
 import 'package:islamic_marriage_usa_app/screens/explore_screen/bindings/explore_binding.dart';
+import 'package:islamic_marriage_usa_app/screens/favourite_biodata_screen/bindings/favourite_biodata_binding.dart';
 import 'package:islamic_marriage_usa_app/screens/favourite_biodata_screen/favourite_biodata_screen.dart';
 import 'package:islamic_marriage_usa_app/screens/forgot_otp_verification_screen/bindings/forgot_otp_verification_binding.dart';
 import 'package:islamic_marriage_usa_app/screens/forgot_otp_verification_screen/forgot_otp_verification_screen.dart';
@@ -81,8 +82,8 @@ class AppPages {
       page: () => HomeScreen(),
       bindings: [
         HomeBinding(),
-        ExploreBinding(),
         ProfileBinding(),
+        ExploreBinding(),
       ],
     ),
     GetPage(
@@ -103,6 +104,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.favouriteBiodataScreen,
       page: () => FavouriteBiodataScreen(),
+      binding: FavouriteBiodataBinding(),
     ),
     GetPage(
       name: AppRoutes.helpCenterScreen,
